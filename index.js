@@ -115,6 +115,101 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
+// Discord tooltip functionality
+function initDiscordTooltip() {
+    const discordLink = document.getElementById('discord-link');
+    let tooltip = null;
+    let tooltipTimeout = null;
+
+    function createTooltip() {
+        tooltip = document.createElement('div');
+        tooltip.className = 'discord-tooltip';
+        
+        const username = discordLink.getAttribute('data-username');
+        tooltip.innerHTML = `
+            <div class="username">${username}</div>
+            <div class="copy-hint">Click to copy username</div>
+        `;
+        
+        document.body.appendChild(tooltip);
+        return tooltip;
+    }
+
+    function showTooltip(e) {
+        if (!tooltip) {
+            tooltip = createTooltip();
+        }
+
+        clearTimeout(tooltipTimeout);
+        
+        const rect = discordLink.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+        
+        tooltip.style.left = (rect.left + rect.width / 2 - tooltipRect.width / 2) + 'px';
+        tooltip.style.top = (rect.top - tooltipRect.height - 15) + 'px';
+        
+        tooltip.classList.add('show');
+    }
+
+    function hideTooltip() {
+        if (tooltip) {
+            tooltipTimeout = setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 100);
+        }
+    }
+
+    function copyUsername(e) {
+        e.preventDefault();
+        const username = discordLink.getAttribute('data-username');
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(username).then(() => {
+                // Update tooltip text temporarily
+                const originalHTML = tooltip.innerHTML;
+                tooltip.innerHTML = `
+                    <div class="username">✅ Copied!</div>
+                    <div class="copy-hint">${username}</div>
+                `;
+                
+                setTimeout(() => {
+                    if (tooltip) {
+                        tooltip.innerHTML = originalHTML;
+                    }
+                }, 2000);
+            });
+        } else {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = username;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Show copied message
+            const originalHTML = tooltip.innerHTML;
+            tooltip.innerHTML = `
+                <div class="username">✅ Copied!</div>
+                <div class="copy-hint">${username}</div>
+            `;
+            
+            setTimeout(() => {
+                if (tooltip) {
+                    tooltip.innerHTML = originalHTML;
+                }
+            }, 2000);
+        }
+    }
+
+    discordLink.addEventListener('mouseenter', showTooltip);
+    discordLink.addEventListener('mouseleave', hideTooltip);
+    discordLink.addEventListener('click', copyUsername);
+}
+
+// Initialize Discord tooltip when DOM is loaded
+document.addEventListener('DOMContentLoaded', initDiscordTooltip);
+
 // Observe elements for animation
 document.querySelectorAll('.stat-item, .skill-card').forEach(el => {
     el.style.opacity = '0';
