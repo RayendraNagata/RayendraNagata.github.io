@@ -118,6 +118,13 @@ const observer = new IntersectionObserver((entries) => {
 // Discord tooltip functionality
 function initDiscordTooltip() {
     const discordLink = document.getElementById('discord-link');
+    
+    if (!discordLink) {
+        console.error('Discord link element not found!');
+        return;
+    }
+    
+    console.log('Discord tooltip initialized');
     let tooltip = null;
     let tooltipTimeout = null;
 
@@ -136,6 +143,8 @@ function initDiscordTooltip() {
     }
 
     function showCopyNotification(username) {
+        console.log('Showing copy notification for:', username);
+        
         // Remove existing notification if any
         const existingNotification = document.querySelector('.copy-notification');
         if (existingNotification) {
@@ -154,10 +163,12 @@ function initDiscordTooltip() {
         `;
 
         document.body.appendChild(notification);
+        console.log('Notification element created and added to body');
 
         // Show notification with animation
         setTimeout(() => {
             notification.classList.add('show');
+            console.log('Show class added to notification');
         }, 100);
 
         // Hide notification after 3 seconds
@@ -166,6 +177,7 @@ function initDiscordTooltip() {
             setTimeout(() => {
                 if (notification.parentNode) {
                     notification.remove();
+                    console.log('Notification removed');
                 }
             }, 400);
         }, 3000);
@@ -203,12 +215,12 @@ function initDiscordTooltip() {
         e.preventDefault();
         const username = discordLink.getAttribute('data-username');
         
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(username).then(() => {
-                // Show copy notification
-                showCopyNotification(username);
-                
-                // Update tooltip text temporarily
+        // Function to show notification
+        const showNotification = () => {
+            showCopyNotification(username);
+            
+            // Update tooltip text temporarily
+            if (tooltip) {
                 const originalHTML = tooltip.innerHTML;
                 tooltip.innerHTML = `
                     <div class="username">✅ Copied!</div>
@@ -220,31 +232,44 @@ function initDiscordTooltip() {
                         tooltip.innerHTML = originalHTML;
                     }
                 }, 2000);
+            }
+        };
+        
+        // Try modern clipboard API first
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(username).then(() => {
+                showNotification();
+            }).catch(() => {
+                // Fallback if clipboard API fails
+                fallbackCopy(username, showNotification);
             });
         } else {
-            // Fallback for older browsers
+            // Fallback for older browsers or non-secure contexts
+            fallbackCopy(username, showNotification);
+        }
+    }
+    
+    function fallbackCopy(text, callback) {
+        try {
             const textArea = document.createElement('textarea');
-            textArea.value = username;
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
             document.body.appendChild(textArea);
+            textArea.focus();
             textArea.select();
-            document.execCommand('copy');
+            
+            const successful = document.execCommand('copy');
             document.body.removeChild(textArea);
             
-            // Show copy notification
-            showCopyNotification(username);
-            
-            // Show copied message
-            const originalHTML = tooltip.innerHTML;
-            tooltip.innerHTML = `
-                <div class="username">✅ Copied!</div>
-                <div class="copy-hint">${username}</div>
-            `;
-            
-            setTimeout(() => {
-                if (tooltip) {
-                    tooltip.innerHTML = originalHTML;
-                }
-            }, 2000);
+            if (successful) {
+                callback();
+            } else {
+                console.log('Copy failed');
+            }
+        } catch (err) {
+            console.error('Fallback copy failed:', err);
         }
     }
 
@@ -254,7 +279,27 @@ function initDiscordTooltip() {
 }
 
 // Initialize Discord tooltip when DOM is loaded
-document.addEventListener('DOMContentLoaded', initDiscordTooltip);
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait a bit to ensure all elements are properly loaded
+    setTimeout(() => {
+        const discordLink = document.getElementById('discord-link');
+        if (discordLink) {
+            initDiscordTooltip();
+        } else {
+            console.error('Discord link not found');
+        }
+    }, 100);
+});
+
+// Alternative initialization for older browsers
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initDiscordTooltip, 100);
+    });
+} else {
+    // DOM already loaded
+    setTimeout(initDiscordTooltip, 100);
+}
 
 // Observe elements for animation
 document.querySelectorAll('.stat-item, .skill-card').forEach(el => {
