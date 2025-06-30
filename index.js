@@ -174,6 +174,12 @@ function initDiscordTooltip() {
             </div>
         `;
 
+        // Add event listener to prevent interaction issues
+        notification.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
         document.body.appendChild(notification);
         console.log('Notification element created and added to body');
 
@@ -184,15 +190,20 @@ function initDiscordTooltip() {
         }, 100);
 
         // Hide notification after 3 seconds
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                    console.log('Notification removed');
-                }
-            }, 400);
+        const hideTimeout = setTimeout(() => {
+            if (notification && notification.parentNode) {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                        console.log('Notification removed');
+                    }
+                }, 400);
+            }
         }, 3000);
+
+        // Store timeout reference to clear if needed
+        notification.hideTimeout = hideTimeout;
     }
 
     function showTooltip(e) {
