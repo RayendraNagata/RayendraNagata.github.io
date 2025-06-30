@@ -135,6 +135,42 @@ function initDiscordTooltip() {
         return tooltip;
     }
 
+    function showCopyNotification(username) {
+        // Remove existing notification if any
+        const existingNotification = document.querySelector('.copy-notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+
+        // Create new notification
+        const notification = document.createElement('div');
+        notification.className = 'copy-notification';
+        notification.innerHTML = `
+            <div class="icon">✅</div>
+            <div class="text">
+                <div class="title">Discord Username Copied!</div>
+                <div class="subtitle">${username}</div>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Show notification with animation
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+
+        // Hide notification after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 400);
+        }, 3000);
+    }
+
     function showTooltip(e) {
         if (!tooltip) {
             tooltip = createTooltip();
@@ -169,6 +205,9 @@ function initDiscordTooltip() {
         
         if (navigator.clipboard) {
             navigator.clipboard.writeText(username).then(() => {
+                // Show copy notification
+                showCopyNotification(username);
+                
                 // Update tooltip text temporarily
                 const originalHTML = tooltip.innerHTML;
                 tooltip.innerHTML = `
@@ -190,6 +229,9 @@ function initDiscordTooltip() {
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
+            
+            // Show copy notification
+            showCopyNotification(username);
             
             // Show copied message
             const originalHTML = tooltip.innerHTML;
