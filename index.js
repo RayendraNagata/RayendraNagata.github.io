@@ -142,6 +142,10 @@ function initDiscordTooltip() {
 
         clearTimeout(tooltipTimeout);
         
+        // Force a reflow to ensure tooltip dimensions are calculated
+        tooltip.style.display = 'block';
+        tooltip.offsetHeight; // Trigger reflow
+        
         const rect = discordLink.getBoundingClientRect();
         const tooltipRect = tooltip.getBoundingClientRect();
         
