@@ -2,6 +2,11 @@
 
 // Initialize app when DOM loads
 document.addEventListener('DOMContentLoaded', function() {
+    // Clear any hash from URL on page load to prevent auto-scroll
+    if (window.location.hash) {
+        history.replaceState(null, null, window.location.pathname);
+    }
+    
     initNavigation();
     initExperienceTabs();
     initGithubProjects(); // This now loads manual projects
@@ -139,6 +144,10 @@ function initSmoothScrolling() {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
+            
+            // Skip if href is just "#"
+            if (targetId === '#') return;
+            
             const targetSection = document.querySelector(targetId);
             
             if (targetSection) {
@@ -149,6 +158,9 @@ function initSmoothScrolling() {
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+                
+                // Update URL without triggering scroll
+                history.pushState(null, null, targetId);
             }
         });
     });
@@ -262,69 +274,14 @@ function initScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
+                entry.target.classList.add('visible');
             }
         });
     }, observerOptions);
     
-    // Observe elements
-    document.querySelectorAll('.hero-content, .about-content, .experience-content, .project-item, .contact-content').forEach(el => {
+    // Add fade-in class and observe elements
+    document.querySelectorAll('.hero-content, .about-content, .experience-content, .project-overview-card, .contact-content').forEach(el => {
+        el.classList.add('fade-in');
         observer.observe(el);
     });
 }
-
-/* ===== MOBILE HAMBURGER MENU ===== */
-function addMobileMenuStyles() {
-    // Add CSS for mobile menu if not already present
-    if (!document.getElementById('mobile-menu-styles')) {
-        const style = document.createElement('style');
-        style.id = 'mobile-menu-styles';
-        style.textContent = `
-            @media (max-width: 768px) {
-                .nav-menu {
-                    position: fixed;
-                    top: 70px;
-                    right: -100%;
-                    width: 100%;
-                    height: calc(100vh - 70px);
-                    background-color: var(--bg-secondary);
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: center;
-                    padding-top: 50px;
-                    transition: var(--transition);
-                    border-left: 1px solid var(--border-color);
-                }
-                
-                .nav-menu.active {
-                    right: 0;
-                }
-                
-                .nav-menu li {
-                    margin: 20px 0;
-                }
-                
-                .nav-link {
-                    font-size: 18px;
-                    padding: 10px 20px;
-                }
-                
-                .hamburger.active .bar:nth-child(2) {
-                    opacity: 0;
-                }
-                
-                .hamburger.active .bar:nth-child(1) {
-                    transform: translateY(8px) rotate(45deg);
-                }
-                
-                .hamburger.active .bar:nth-child(3) {
-                    transform: translateY(-8px) rotate(-45deg);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-}
-
-// Initialize mobile menu styles
-addMobileMenuStyles();
