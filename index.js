@@ -1,333 +1,330 @@
-// Navbar scroll effect
-window.addEventListener('scroll', () => {
-    const navbar = document.getElementById('navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
+/* ===== PROFESSIONAL PORTFOLIO JS ===== */
+
+// Initialize app when DOM loads
+document.addEventListener('DOMContentLoaded', function() {
+    initNavigation();
+    initExperienceTabs();
+    initGithubProjects(); // This now loads manual projects
+    initDiscordCopy();
+    initScrollAnimations();
+    initSmoothScrolling();
 });
 
-// Smooth scrolling
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        
-        // Skip if href is just "#" or empty
-        if (href === '#' || href === '' || href.length <= 1) {
-            return;
-        }
-        
-        // Skip if this is the discord link (let discord handler manage it)
-        if (this.id === 'discord-link') {
-            return;
-        }
-        
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
-// Three.js background animation
-const scene = new THREE.Scene();
-const canvas = document.getElementById('bg-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 5;
-
-// Create particles
-const geometry = new THREE.BufferGeometry();
-const particleCount = 1000;
-const positions = new Float32Array(particleCount * 3);
-const colors = new Float32Array(particleCount * 3);
-
-for (let i = 0; i < particleCount * 3; i += 3) {
-    positions[i] = (Math.random() - 0.5) * 20;
-    positions[i + 1] = (Math.random() - 0.5) * 20;
-    positions[i + 2] = (Math.random() - 0.5) * 20;
-
-    colors[i] = Math.random();
-    colors[i + 1] = Math.random() * 0.5 + 0.5;
-    colors[i + 2] = 1;
-}
-
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-const material = new THREE.PointsMaterial({
-    size: 0.05,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.8
-});
-
-const particles = new THREE.Points(geometry, material);
-scene.add(particles);
-
-// Animation loop
-function animate() {
-    requestAnimationFrame(animate);
+/* ===== NAVIGATION ===== */
+function initNavigation() {
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
     
-    particles.rotation.x += 0.001;
-    particles.rotation.y += 0.002;
-    
-    const positions = particles.geometry.attributes.position.array;
-    for (let i = 0; i < positions.length; i += 3) {
-        positions[i + 1] += Math.sin(Date.now() * 0.001 + positions[i]) * 0.01;
-    }
-    particles.geometry.attributes.position.needsUpdate = true;
-    
-    renderer.render(scene, camera);
-}
-
-animate();
-
-// Handle window resize
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-// Add floating particles to hero section
-function createParticles() {
-    const hero = document.querySelector('.hero');
-    for (let i = 0; i < 20; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        hero.appendChild(particle);
-    }
-}
-
-createParticles();
-
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Discord tooltip functionality
-function initDiscordTooltip() {
-    const discordLink = document.getElementById('discord-link');
-    
-    if (!discordLink) {
-        console.error('Discord link element not found!');
-        return;
-    }
-    
-    console.log('Discord tooltip initialized');
-    let tooltip = null;
-    let tooltipTimeout = null;
-
-    function createTooltip() {
-        tooltip = document.createElement('div');
-        tooltip.className = 'discord-tooltip';
-        
-        const username = discordLink.getAttribute('data-username');
-        tooltip.innerHTML = `
-            <div class="username">${username}</div>
-            <div class="copy-hint">Click to copy username</div>
-        `;
-        
-        document.body.appendChild(tooltip);
-        return tooltip;
-    }
-
-    function showCopyNotification(username) {
-        console.log('Showing copy notification for:', username);
-        
-        // Remove existing notification if any
-        const existingNotification = document.querySelector('.copy-notification');
-        if (existingNotification) {
-            existingNotification.remove();
-        }
-
-        // Create new notification
-        const notification = document.createElement('div');
-        notification.className = 'copy-notification';
-        notification.innerHTML = `
-            <div class="icon">✅</div>
-            <div class="text">
-                <div class="title">Discord Username Copied!</div>
-                <div class="subtitle">${username}</div>
-            </div>
-        `;
-
-        // Add event listener to prevent interaction issues
-        notification.addEventListener('click', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
         });
-
-        document.body.appendChild(notification);
-        console.log('Notification element created and added to body');
-
-        // Show notification with animation
-        setTimeout(() => {
-            notification.classList.add('show');
-            console.log('Show class added to notification');
-        }, 100);
-
-        // Hide notification after 3 seconds
-        const hideTimeout = setTimeout(() => {
-            if (notification && notification.parentNode) {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                        console.log('Notification removed');
-                    }
-                }, 400);
-            }
-        }, 3000);
-
-        // Store timeout reference to clear if needed
-        notification.hideTimeout = hideTimeout;
-    }
-
-    function showTooltip(e) {
-        if (!tooltip) {
-            tooltip = createTooltip();
-        }
-
-        clearTimeout(tooltipTimeout);
         
-        // Force a reflow to ensure tooltip dimensions are calculated
-        tooltip.style.display = 'block';
-        tooltip.offsetHeight; // Trigger reflow
-        
-        const rect = discordLink.getBoundingClientRect();
-        const tooltipRect = tooltip.getBoundingClientRect();
-        
-        tooltip.style.left = (rect.left + rect.width / 2 - tooltipRect.width / 2) + 'px';
-        tooltip.style.top = (rect.top - tooltipRect.height - 15) + 'px';
-        
-        tooltip.classList.add('show');
-    }
-
-    function hideTooltip() {
-        if (tooltip) {
-            tooltipTimeout = setTimeout(() => {
-                tooltip.classList.remove('show');
-            }, 100);
-        }
-    }
-
-    function copyUsername(e) {
-        e.preventDefault();
-        const username = discordLink.getAttribute('data-username');
-        
-        // Function to show notification
-        const showNotification = () => {
-            showCopyNotification(username);
-            
-            // Update tooltip text temporarily
-            if (tooltip) {
-                const originalHTML = tooltip.innerHTML;
-                tooltip.innerHTML = `
-                    <div class="username">✅ Copied!</div>
-                    <div class="copy-hint">${username}</div>
-                `;
-                
-                setTimeout(() => {
-                    if (tooltip) {
-                        tooltip.innerHTML = originalHTML;
-                    }
-                }, 2000);
-            }
-        };
-        
-        // Try modern clipboard API first
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(username).then(() => {
-                showNotification();
-            }).catch(() => {
-                // Fallback if clipboard API fails
-                fallbackCopy(username, showNotification);
+        // Close menu when clicking on nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
             });
-        } else {
-            // Fallback for older browsers or non-secure contexts
-            fallbackCopy(username, showNotification);
-        }
+        });
     }
     
-    function fallbackCopy(text, callback) {
-        try {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            textArea.style.position = 'fixed';
-            textArea.style.left = '-999999px';
-            textArea.style.top = '-999999px';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            
-            const successful = document.execCommand('copy');
-            document.body.removeChild(textArea);
-            
-            if (successful) {
-                callback();
+    // Change navbar background on scroll
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            if (window.scrollY > 100) {
+                navbar.style.backgroundColor = 'rgba(10, 10, 10, 0.98)';
             } else {
-                console.log('Copy failed');
+                navbar.style.backgroundColor = 'rgba(10, 10, 10, 0.95)';
             }
-        } catch (err) {
-            console.error('Fallback copy failed:', err);
         }
-    }
-
-    discordLink.addEventListener('mouseenter', showTooltip);
-    discordLink.addEventListener('mouseleave', hideTooltip);
-    discordLink.addEventListener('click', copyUsername);
-}
-
-// Initialize Discord tooltip when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait a bit to ensure all elements are properly loaded
-    setTimeout(() => {
-        const discordLink = document.getElementById('discord-link');
-        if (discordLink) {
-            initDiscordTooltip();
-        } else {
-            console.error('Discord link not found');
-        }
-    }, 100);
-});
-
-// Alternative initialization for older browsers
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(initDiscordTooltip, 100);
     });
-} else {
-    // DOM already loaded
-    setTimeout(initDiscordTooltip, 100);
 }
 
-// Observe elements for animation
-document.querySelectorAll('.stat-item, .skill-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(50px)';
-    el.style.transition = 'all 0.6s ease';
-    observer.observe(el);
-});
+/* ===== EXPERIENCE TABS ===== */
+function initExperienceTabs() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    
+    tabButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons and panels
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanels.forEach(panel => panel.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding panel
+            button.classList.add('active');
+            if (tabPanels[index]) {
+                tabPanels[index].classList.add('active');
+            }
+        });
+    });
+    
+    // Set first tab as active by default
+    if (tabButtons[0] && tabPanels[0]) {
+        tabButtons[0].classList.add('active');
+        tabPanels[0].classList.add('active');
+    }
+}
+
+/* ===== MANUAL PROJECTS ===== */
+function initGithubProjects() {
+    const projectsContainer = document.getElementById('github-projects');
+    
+    if (!projectsContainer) return;
+    
+    // Show loading state briefly for smooth transition
+    projectsContainer.innerHTML = `
+        <div class="project-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading featured projects...</p>
+        </div>
+    `;
+    
+    // Load projects after a brief delay for better UX
+    setTimeout(() => {
+        displayManualProjects(projectsContainer);
+    }, 800);
+}
+
+function displayManualProjects(container) {
+    const projects = [
+        {
+            title: 'TASKIT',
+            description: 'A comprehensive task management application with real-time collaboration capabilities.',
+            role: 'Full Stack Developer',
+            icon: 'fas fa-tasks'
+        },
+        {
+            title: 'ScreenSquad',
+            description: 'Movie discovery platform with reviews and personalized recommendations.',
+            role: 'Frontend Developer', 
+            icon: 'fas fa-film'
+        },
+        {
+            title: 'PADSIRTRW',
+            description: 'Community management system for neighborhood associations.',
+            role: 'Project Manager',
+            icon: 'fas fa-users'
+        }
+    ];
+
+    container.innerHTML = `
+        <div class="projects-overview">
+            ${projects.map(project => `
+                <div class="project-overview-card">
+                    <div class="project-icon">
+                        <i class="${project.icon}"></i>
+                    </div>
+                    <h3>${project.title}</h3>
+                    <p>${project.description}</p>
+                    <span class="project-role">${project.role}</span>
+                </div>
+            `).join('')}
+        </div>
+        <div class="projects-cta">
+            <a href="projects.html" class="btn btn-primary">
+                View All Projects
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    `;
+}
+
+/* ===== SMOOTH SCROLLING ===== */
+function initSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 0;
+                const targetPosition = targetSection.offsetTop - navbarHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+/* ===== DISCORD COPY FUNCTIONALITY ===== */
+function initDiscordCopy() {
+    const discordLinks = document.querySelectorAll('.social-link[href*="discord"]');
+    const discordUsername = "rayendra_nagata";
+    
+    discordLinks.forEach(link => {
+        // Create tooltip
+        const tooltip = document.createElement('span');
+        tooltip.className = 'discord-tooltip';
+        tooltip.textContent = `Click to copy: ${discordUsername}`;
+        link.appendChild(tooltip);
+        
+        // Show/hide tooltip on hover
+        link.addEventListener('mouseenter', () => {
+            tooltip.style.opacity = '1';
+            tooltip.style.visibility = 'visible';
+        });
+        
+        link.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                tooltip.style.opacity = '0';
+                tooltip.style.visibility = 'hidden';
+                tooltip.textContent = `Click to copy: ${discordUsername}`;
+                tooltip.style.borderColor = 'var(--border-color)';
+            }, 1000);
+        });
+        
+        link.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            try {
+                // Try modern clipboard API first
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(discordUsername);
+                } else {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = discordUsername;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-999999px';
+                    textArea.style.top = '-999999px';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    textArea.remove();
+                }
+                
+                showCopyNotification(`Discord username "${discordUsername}" copied to clipboard!`);
+                
+                // Update tooltip
+                if (tooltip) {
+                    tooltip.textContent = 'Copied!';
+                    tooltip.style.borderColor = 'var(--accent-primary)';
+                }
+            } catch (err) {
+                console.error('Failed to copy Discord username:', err);
+                showCopyNotification('Failed to copy Discord username', 'error');
+            }
+        });
+    });
+}
+
+function showCopyNotification(message, type = 'success') {
+    // Remove existing notification
+    const existingNotification = document.querySelector('.copy-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create notification
+    const notification = document.createElement('div');
+    notification.className = 'copy-notification';
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        <span>${message}</span>
+    `;
+    
+    if (type === 'error') {
+        notification.style.borderColor = '#ff6b6b';
+    }
+    
+    document.body.appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => notification.classList.add('show'), 100);
+    
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 300);
+    }, 3000);
+}
+
+/* ===== SCROLL ANIMATIONS ===== */
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements
+    document.querySelectorAll('.hero-content, .about-content, .experience-content, .project-item, .contact-content').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+/* ===== MOBILE HAMBURGER MENU ===== */
+function addMobileMenuStyles() {
+    // Add CSS for mobile menu if not already present
+    if (!document.getElementById('mobile-menu-styles')) {
+        const style = document.createElement('style');
+        style.id = 'mobile-menu-styles';
+        style.textContent = `
+            @media (max-width: 768px) {
+                .nav-menu {
+                    position: fixed;
+                    top: 70px;
+                    right: -100%;
+                    width: 100%;
+                    height: calc(100vh - 70px);
+                    background-color: var(--bg-secondary);
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding-top: 50px;
+                    transition: var(--transition);
+                    border-left: 1px solid var(--border-color);
+                }
+                
+                .nav-menu.active {
+                    right: 0;
+                }
+                
+                .nav-menu li {
+                    margin: 20px 0;
+                }
+                
+                .nav-link {
+                    font-size: 18px;
+                    padding: 10px 20px;
+                }
+                
+                .hamburger.active .bar:nth-child(2) {
+                    opacity: 0;
+                }
+                
+                .hamburger.active .bar:nth-child(1) {
+                    transform: translateY(8px) rotate(45deg);
+                }
+                
+                .hamburger.active .bar:nth-child(3) {
+                    transform: translateY(-8px) rotate(-45deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Initialize mobile menu styles
+addMobileMenuStyles();

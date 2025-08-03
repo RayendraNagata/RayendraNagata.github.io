@@ -2,136 +2,322 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Rayendra Ogya Nagata - Technology Enthusiast & Digital Innovator">
-    <title>Rayendra Ogya Nagata - Personal Brand</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rayendra Ogya Nagata - Software Engineering Student at UGM specializing in Full-Stack Development">
+    <title>Rayendra Ogya Nagata - Software Engineer</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <nav id="navbar">
+    <!-- Navigation -->
+    <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">Rayendra</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#contact">Contact</a></li>
+            <a href="#" class="nav-logo">
+                <span class="logo-bracket">&lt;</span>
+                <span class="logo-text">RayendraN</span>
+                <span class="logo-bracket">/&gt;</span>
+            </a>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#experience" class="nav-link">Experience</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#work" class="nav-link">Work</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
             </ul>
+            
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <section id="home" class="hero">
-        <canvas id="bg-canvas"></canvas>
-        <div class="hero-content">
-            <h1>Rayendra Ogya Nagata</h1>
-            <p>Technology Enthusiast & Digital Innovator</p>
-            <a href="#about" class="cta-button">Discover More</a>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-intro">
+                    <p class="hero-greeting">Hi, my name is</p>
+                    <h1 class="hero-name">Rayendra Ogya Nagata</h1>
+                    <h2 class="hero-title">Software Engineering Student</h2>
+                    <p class="hero-description">
+                        I'm a passionate software engineering student at <span class="highlight">Universitas Gadjah Mada</span> 
+                        with 2+ years of experience building exceptional digital experiences. 
+                        Currently focused on building accessible, human-centered products.
+                    </p>
+                    
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn btn-primary">View My Work</a>
+                        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+                    </div>
+                </div>
+                
+                <div class="hero-image">
+                    <div class="profile-container">
+                        <div class="profile-image">
+                            <div class="profile-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="profile-background"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-social">
+                <a href="https://github.com/RayendraNagata" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="mailto:realrayendra@gmail.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="#" id="discord-link" data-username="fallininfall" aria-label="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+            
+            <div class="scroll-indicator">
+                <div class="scroll-line"></div>
+                <span class="scroll-text">Scroll</span>
+            </div>
         </div>
     </section>
 
+    <!-- About Section -->
     <section id="about" class="about">
-        <h2 class="section-title">About Me</h2>
-        <div class="about-content">
-            <div class="about-text">
-                <p>Hello! I'm Rayendra Ogya Nagata, a passionate technology enthusiast dedicated to creating innovative digital solutions. With a strong foundation in modern technologies, I strive to bridge the gap between creative vision and technical implementation.</p>
-                <br>
-                <p>My journey in technology has been driven by curiosity and a constant desire to learn and grow. I believe in the power of technology to transform ideas into reality and make a positive impact on the world.</p>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">01.</span>
+                    About Me
+                </h2>
             </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-number">2+</div>
-                    <div class="stat-label">Years Experience</div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        Hello! I'm Rayendra, a software engineering student based in Yogyakarta, Indonesia. 
+                        I enjoy creating things that live on the internet, whether that be websites, applications, 
+                        or anything in between.
+                    </p>
+                    
+                    <p>
+                        My interest in software development started back in 2022 when I first entered 
+                        <strong>Universitas Gadjah Mada</strong> — turns out hacking together custom solutions 
+                        taught me a lot about HTML, CSS, and JavaScript!
+                    </p>
+                    
+                    <p>
+                        Fast-forward to today, and I've had the privilege of building software for various 
+                        projects and learning cutting-edge technologies. My main focus these days is building 
+                        accessible, inclusive products and digital experiences.
+                    </p>
+                    
+                    <p>Here are a few technologies I've been working with recently:</p>
+                    
+                    <ul class="tech-list">
+                        <li>JavaScript (ES6+)</li>
+                        <li>TypeScript</li>
+                        <li>React</li>
+                        <li>Node.js</li>
+                        <li>Python</li>
+                        <li>Java</li>
+                        <li>MongoDB</li>
+                        <li>PostgreSQL</li>
+                    </ul>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">25+</div>
-                    <div class="stat-label">Projects Completed</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">10+</div>
-                    <div class="stat-label">Technologies</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Dedication</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="skills" class="skills">
-        <div class="skills-container">
-            <h2 class="section-title">Skills & Expertise</h2>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-icon">💻</div>
-                    <h3 class="skill-name">Web Development</h3>
-                    <p class="skill-description">Building modern, responsive websites with cutting-edge technologies</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">📱</div>
-                    <h3 class="skill-name">Mobile Apps</h3>
-                    <p class="skill-description">Creating seamless mobile experiences for iOS and Android</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">🤖</div>
-                    <h3 class="skill-name">AI & ML</h3>
-                    <p class="skill-description">Implementing intelligent solutions with machine learning</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">☁️</div>
-                    <h3 class="skill-name">Cloud Computing</h3>
-                    <p class="skill-description">Deploying scalable applications on cloud platforms</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">🎨</div>
-                    <h3 class="skill-name">UI/UX Design</h3>
-                    <p class="skill-description">Crafting beautiful and intuitive user interfaces</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">🔧</div>
-                    <h3 class="skill-name">DevOps</h3>
-                    <p class="skill-description">Streamlining development and deployment processes</p>
+                
+                <div class="about-image">
+                    <div class="image-wrapper">
+                        <div class="image-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="image-overlay"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">02.</span>
+                    Where I've Worked & Studied
+                </h2>
+            </div>
+            
+            <div class="experience-content">
+                <div class="experience-tabs">
+                    <button class="tab-button active" data-tab="ugm">UGM</button>
+                    <button class="tab-button" data-tab="projects">Projects</button>
+                    <button class="tab-button" data-tab="learning">Learning</button>
+                </div>
+                
+                <div class="experience-panels">
+                    <div id="ugm" class="tab-panel active">
+                        <h3>Software Engineering Student <span class="company">@ Universitas Gadjah Mada</span></h3>
+                        <p class="duration">September 2022 - Present</p>
+                        <ul>
+                            <li>Currently in 3rd year of Software Engineering program</li>
+                            <li>Focused on full-stack development, algorithms, and software design patterns</li>
+                            <li>Participated in various programming competitions and hackathons</li>
+                            <li>Collaborated on team projects using Agile methodologies</li>
+                            <li>Maintained strong academic performance while building practical skills</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="personal-projects" class="tab-panel">
+                        <h3>Personal Projects <span class="company">@ Self-Directed Learning</span></h3>
+                        <p class="duration">2022 - Present</p>
+                        <ul>
+                            <li>Built 10+ full-stack applications using modern web technologies</li>
+                            <li>Implemented responsive designs with focus on user experience</li>
+                            <li>Integrated third-party APIs and services</li>
+                            <li>Deployed applications on various cloud platforms</li>
+                            <li>Contributed to open-source projects on GitHub</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="learning" class="tab-panel">
+                        <h3>Continuous Learning <span class="company">@ Various Platforms</span></h3>
+                        <p class="duration">2022 - Present</p>
+                        <ul>
+                            <li>Completed online courses in React, Node.js, and database design</li>
+                            <li>Practiced algorithmic problem-solving on coding platforms</li>
+                            <li>Attended tech meetups and developer conferences</li>
+                            <li>Stayed updated with latest trends in software development</li>
+                            <li>Built a strong foundation in computer science fundamentals</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Overview Section -->
+    <section id="work" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">03.</span>
+                    Some Things I've Built
+                </h2>
+            </div>
+            
+            <!-- Project Overview Cards -->
+            <div class="projects-overview">
+                <div class="project-overview-card">
+                    <div class="project-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>TASKIT</h3>
+                    <p>Task Management Application</p>
+                    <span class="project-role">Full Stack Developer</span>
+                </div>
+                
+                <div class="project-overview-card">
+                    <div class="project-icon">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <h3>ScreenSquad</h3>
+                    <p>Screen Recording Platform</p>
+                    <span class="project-role">Frontend Developer</span>
+                </div>
+                
+                <div class="project-overview-card">
+                    <div class="project-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h3>PADSIRTRW</h3>
+                    <p>RT/RW Management System</p>
+                    <span class="project-role">Project Manager</span>
+                </div>
+            </div>
+            
+            <div class="projects-cta">
+                <a href="projects.html" class="btn btn-outline">View All Projects</a>
+            </div>
+        </div>
+    </section>
+    </section>
+
+    <!-- Contact Section -->
     <section id="contact" class="contact">
-        <h2 class="section-title">Get In Touch</h2>
-        <div class="contact-content">
-            <p>Ready to collaborate on your next project? Let's create something amazing together!</p>
-            <div class="contact-links">
-                <a href="mailto:realrayendra@gmail.com" class="contact-link">
-                    <span>📧</span>
-                    <span>Email</span>
-                </a>
-                <a href="https://linkedin.com/in/yourprofile" class="contact-link">
-                    <span>💼</span>
-                    <span>LinkedIn</span>
-                </a>
-                <a href="https://github.com/RayendraNagata" class="contact-link">
-                    <span>💻</span>
-                    <span>GitHub</span>
-                </a>
-                <a href="https://instagram.com/yourusername" class="contact-link">
-                    <span>📸</span>
-                    <span>Instagram</span>
-                </a>
-                <a href="#" class="contact-link" id="discord-link" data-username="fallininfall">
-                    <span>🎮</span>
-                    <span>Discord</span>
-                </a>
-                <a href="https://twitter.com/falliningaeul" class="contact-link">
-                    <span>🐦</span>
-                    <span>Twitter</span>
-                </a>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">04.</span>
+                    What's Next?
+                </h2>
+            </div>
+            
+            <div class="contact-content">
+                <h3 class="contact-heading">Get In Touch</h3>
+                <p class="contact-description">
+                    Although I'm currently focused on my studies, I'm always open to discussing new opportunities, 
+                    interesting projects, or just chatting about technology. Whether you have a question or just 
+                    want to say hi, I'll try my best to get back to you!
+                </p>
+                
+                <div class="contact-cta">
+                    <a href="mailto:realrayendra@gmail.com" class="btn btn-primary">Say Hello</a>
+                </div>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Yogyakarta, Indonesia</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Universitas Gadjah Mada</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Available for opportunities</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Rayendra Ogya Nagata. Built with passion and code.</p>
+                <div class="footer-social">
+                    <a href="https://github.com/RayendraNagata" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/yourprofile" target="_blank">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="mailto:realrayendra@gmail.com">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="index.js"></script>
 </body>
