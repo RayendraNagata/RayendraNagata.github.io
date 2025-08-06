@@ -95,7 +95,7 @@ function initGithubProjects() {
 }
 
 function displayManualProjects(container) {
-    const projects = [
+    const allProjects = [
         {
             title: 'Eventive',
             description: 'Professional event management platform with ticketing, analytics, and real-time check-in system.',
@@ -105,7 +105,7 @@ function displayManualProjects(container) {
         {
             title: 'Quicacademy',
             description: 'AI-powered educational platform with intelligent content generation and personalized learning.',
-            role: 'Lead Full Stack Developer',
+            role: 'Full Stack Developer',
             icon: 'fas fa-graduation-cap'
         },
         {
@@ -121,16 +121,19 @@ function displayManualProjects(container) {
             icon: 'fas fa-film'
         },
         {
-            title: 'PADSIRTRW',
+            title: 'SIMAS',
             description: 'Community management system for neighborhood associations.',
             role: 'Project Manager',
             icon: 'fas fa-users'
         }
     ];
 
+    // Show featured projects on homepage: Eventive, TASKIT, SIMAS (replace Quicacademy since it's not finished)
+    const featuredProjects = [allProjects[0], allProjects[2], allProjects[4]]; // Eventive, TASKIT, SIMAS
+
     container.innerHTML = `
         <div class="projects-overview">
-            ${projects.map(project => `
+            ${featuredProjects.map(project => `
                 <div class="project-overview-card">
                     <div class="project-icon">
                         <i class="${project.icon}"></i>
