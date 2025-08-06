@@ -97,6 +97,12 @@ function initGithubProjects() {
 function displayManualProjects(container) {
     const projects = [
         {
+            title: 'Quicacademy',
+            description: 'AI-powered educational platform with intelligent content generation and personalized learning.',
+            role: 'Lead Full Stack Developer',
+            icon: 'fas fa-graduation-cap'
+        },
+        {
             title: 'TASKIT',
             description: 'A comprehensive task management application with real-time collaboration capabilities.',
             role: 'Full Stack Developer',
