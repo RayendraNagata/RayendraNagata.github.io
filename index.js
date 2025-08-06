@@ -97,6 +97,12 @@ function initGithubProjects() {
 function displayManualProjects(container) {
     const projects = [
         {
+            title: 'Eventive',
+            description: 'Professional event management platform with ticketing, analytics, and real-time check-in system.',
+            role: 'Full Stack Developer',
+            icon: 'fas fa-calendar-alt'
+        },
+        {
             title: 'Quicacademy',
             description: 'AI-powered educational platform with intelligent content generation and personalized learning.',
             role: 'Lead Full Stack Developer',
