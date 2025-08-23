@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initDiscordCopy();
     initScrollAnimations();
     initSmoothScrolling();
+    initCertificateModal();
 });
 
 /* ===== NAVIGATION ===== */
@@ -295,8 +296,58 @@ function initScrollAnimations() {
     }, observerOptions);
     
     // Add fade-in class and observe elements
-    document.querySelectorAll('.hero-content, .about-content, .experience-content, .project-overview-card, .contact-content').forEach(el => {
+    document.querySelectorAll('.hero-content, .about-content, .experience-content, .project-overview-card, .contact-content, .certification-card').forEach(el => {
         el.classList.add('fade-in');
         observer.observe(el);
+    });
+}
+
+/* ===== CERTIFICATE MODAL ===== */
+function initCertificateModal() {
+    // Create modal element
+    const modal = document.createElement('div');
+    modal.className = 'certificate-modal';
+    modal.innerHTML = `
+        <div class="certificate-modal-content">
+            <button class="certificate-modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="" alt="Certificate">
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    const modalImg = modal.querySelector('img');
+    const closeBtn = modal.querySelector('.certificate-modal-close');
+    
+    // Add click listeners to certificate images
+    document.querySelectorAll('.certification-image').forEach(certImage => {
+        certImage.addEventListener('click', () => {
+            const img = certImage.querySelector('img');
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    
+    // Close modal functionality
+    const closeModal = () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    };
+    
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
     });
 }
