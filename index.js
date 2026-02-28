@@ -98,22 +98,28 @@ function initGithubProjects() {
 function displayManualProjects(container) {
     const allProjects = [
         {
+            title: 'SIMAGANG',
+            description: 'Internship management system officially adopted by TRPL UGM, automating registration and reporting processes to significantly reduce manual administrative workloads.',
+            role: 'Lead Developer & Project Manager',
+            icon: 'fas fa-clipboard-list'
+        },
+        {
             title: 'Eventive',
-            description: 'Professional event management platform with ticketing, analytics, and real-time check-in system.',
+            description: 'A professional event management platform featuring real-time ticketing analytics and check-in systems.',
             role: 'Full Stack Developer',
             icon: 'fas fa-calendar-alt'
         },
         {
-            title: 'Quicacademy',
-            description: 'AI-powered educational platform with intelligent content generation and personalized learning.',
-            role: 'Full Stack Developer',
-            icon: 'fas fa-graduation-cap'
-        },
-        {
             title: 'TASKIT',
-            description: 'A comprehensive task management application with real-time collaboration capabilities.',
+            description: 'A collaborative task management application designed for real-time team synchronization.',
             role: 'Full Stack Developer',
             icon: 'fas fa-tasks'
+        },
+        {
+            title: 'SIMAS',
+            description: 'Community Management System to digitize neighborhood association records and streamline community management.',
+            role: 'Lead Developer & Project Manager',
+            icon: 'fas fa-users'
         },
         {
             title: 'ScreenSquad',
@@ -122,15 +128,15 @@ function displayManualProjects(container) {
             icon: 'fas fa-film'
         },
         {
-            title: 'SIMAS',
-            description: 'Community management system for neighborhood associations.',
-            role: 'Project Manager',
-            icon: 'fas fa-users'
+            title: 'Quicacademy',
+            description: 'AI-powered educational platform with intelligent content generation and personalized learning.',
+            role: 'Full Stack Developer',
+            icon: 'fas fa-graduation-cap'
         }
     ];
 
-    // Show featured projects on homepage: Eventive, TASKIT, SIMAS (replace Quicacademy since it's not finished)
-    const featuredProjects = [allProjects[0], allProjects[2], allProjects[4]]; // Eventive, TASKIT, SIMAS
+    // Show featured projects on homepage: SIMAGANG, Eventive, TASKIT
+    const featuredProjects = [allProjects[0], allProjects[1], allProjects[2]]; // SIMAGANG, Eventive, TASKIT
 
     container.innerHTML = `
         <div class="projects-overview">
